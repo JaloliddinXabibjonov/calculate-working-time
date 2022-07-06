@@ -79,6 +79,6 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Worker : {}", id);
-        workerRepository.deleteById(id);
+        workerRepository.deleteByWorkerTgId(id);
     }
 }

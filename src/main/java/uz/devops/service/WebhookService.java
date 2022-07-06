@@ -31,7 +31,9 @@ import uz.devops.repository.ReasonRepository;
 import uz.devops.repository.WorkHistoryRepository;
 import uz.devops.repository.WorkerRepository;
 import uz.devops.service.dto.ResultTelegram;
+import uz.devops.service.dto.WorkerDTO;
 import uz.devops.service.impl.WorkHistoryServiceImpl;
+import uz.devops.service.impl.WorkerServiceImpl;
 
 @Service
 public class WebhookService {
@@ -58,7 +60,10 @@ public class WebhookService {
     @Autowired
     WorkHistoryServiceImpl workHistoryService;
 
-    private static final String sendMessageUrl = botProperties.getBotUrl() + botProperties.getToken() + "/sendMessage";
+    @Autowired
+    WorkerServiceImpl workerService;
+
+    //    private static final String sendMessageUrl = botProperties.getBotUrl() + botProperties.getToken() + "/sendMessage";
 
     public void startBot(Update update, String message, Worker worker, boolean checkBoss) {
         sendMessage.setChatId(update.getMessage().getChatId().toString());
@@ -352,7 +357,7 @@ public class WebhookService {
         sendMessage.setChatId(update.getMessage().getChatId().toString());
         sendMessage.setText(
             check
-                ? "Xodim ma'lumotlarini kiriting(familiyasi ismi telegram id si): (+worker deb boshlang,\n Mas: Sodiqov Sodiq 573492532)"
+                ? "Xodim ma'lumotlarini kiriting(familiyasi ismi telegram id si): (+worker deb boshlang,\n Mas: +workerSodiqov Sodiq 573492532)"
                 : "Noto'g'ri buyruq berildi!"
         );
         sendMessage.setReplyMarkup(buttons(Status.SETTINGS, Status.BACK));
@@ -387,11 +392,23 @@ public class WebhookService {
         );
     }
 
-    public void removeWorker(Update update, Long removeWorkerTgId) {
-        sendMessage.setChatId(update.getCallbackQuery().getMessage().getChatId().toString());
-        workerRepository.deleteById(removeWorkerTgId);
-        sendMessage.setText("Xodim muvaffaqiyatli o'chirildi. Kerakli bo‘limni tanlang! \uD83D\uDC47");
+    //    public void removeWorker(Update update, Long removeWorkerTgId) {
+    //        sendMessage.setChatId(update.getCallbackQuery().getMessage().getChatId().toString());
+    //        sendMessage.setText("Xodim muvaffaqiyatli o'chirildi. Kerakli bo‘limni tanlang! \uD83D\uDC47");
+    //        sendMessage.setReplyMarkup(buttons(Status.SETTINGS, Status.BACK));
+    //        restTemplate.postForObject(
+    //            Constants.TELEGRAM_BOT_URL + Constants.TELEGRAM_BOT_TOKEN + "/sendMessage",
+    //            sendMessage,
+    //            ResultTelegram.class
+    //        );
+    //        workerRepository.deleteByWorkerTgId(removeWorkerTgId);
+    //    }
+
+    public void addWorker(Update update, WorkerDTO workerDTO) {
+        sendMessage.setChatId(update.getMessage().getChatId().toString());
         sendMessage.setReplyMarkup(buttons(Status.SETTINGS, Status.BACK));
+        workerService.save(workerDTO);
+        sendMessage.setText("Xodim muvaffaqiyatli qo'shildi. Kerakli bo‘limni tanlang! \uD83D\uDC47");
         restTemplate.postForObject(
             Constants.TELEGRAM_BOT_URL + Constants.TELEGRAM_BOT_TOKEN + "/sendMessage",
             sendMessage,

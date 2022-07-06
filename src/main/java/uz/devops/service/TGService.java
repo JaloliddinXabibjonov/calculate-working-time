@@ -9,6 +9,7 @@ import uz.devops.domain.Worker;
 import uz.devops.repository.ActionRepository;
 import uz.devops.repository.WorkerRepository;
 import uz.devops.service.dto.MessageDTo;
+import uz.devops.service.dto.WorkerDTO;
 
 @Service
 public class TGService {
@@ -149,27 +150,46 @@ public class TGService {
                         } else {
                             webhookService.errorCommand(update, "Noto'g'ri buyruq berildi. Kerakli bo‘limni tanlang! \uD83D\uDC47");
                         }
+                    } else if (text.startsWith("+worker")) {
+                        if (messageDToList.size() > 0) {
+                            int i = -1;
+                            for (MessageDTo messageDTo : messageDToList) {
+                                i++;
+                                if (
+                                    messageDTo.getChatId().equals(update.getMessage().getChatId()) &&
+                                    messageDTo.getMessageId() + 2 == update.getMessage().getMessageId()
+                                ) {
+                                    text = text.substring(7);
+                                    String[] split = text.split(" ");
+                                    webhookService.addWorker(
+                                        update,
+                                        new WorkerDTO(split[0] + " " + split[1], Long.parseLong(split[split.length - 1]), "User")
+                                    );
+                                    messageDToList.remove(i);
+                                    break;
+                                }
+                            }
+                        } else {
+                            webhookService.errorCommand(update, "Noto'g'ri buyruq berildi. Kerakli bo‘limni tanlang! \uD83D\uDC47");
+                        }
                     }
                 } else {
                     webhookService.workerNotFound(update);
                 }
             }
+        } else if (update.hasCallbackQuery()) {
+            //            if (update.getCallbackQuery().getData().startsWith("#removeId")) {
+            //                String removeWorkerTgId = update.getCallbackQuery().getData().substring(9);
+            //                int i = -1;
+            //                for (MessageDTo messageDTo : messageDToList) {
+            //                    i++;
+            //                    if (messageDTo.getChatId().equals(update.getCallbackQuery().getMessage().getChatId()) && messageDTo.getMessageId() + 3 == update.getCallbackQuery().getMessage().getMessageId()) {
+            //                        webhookService.removeWorker(update, Long.parseLong(removeWorkerTgId));
+            //                        messageDToList.remove(i);
+            //                        break;
+            //                    }
+            //                }
+            //            }
         }
-        //        else if (update.hasCallbackQuery() ) {
-        //            if (update.getCallbackQuery().getData().startsWith("#removeId")) {
-        //                String removeWorkerTgId = update.getCallbackQuery().getData().substring(9);
-        //                if (messageDToList.size() > 0 && check) {
-        //                    int i = -1;
-        //                    for (MessageDTo messageDTo : messageDToList) {
-        //                        i++;
-        //                        if (messageDTo.getChatId().equals(update.getCallbackQuery().getMessage().getChatId()) && messageDTo.getMessageId() + 3 == update.getCallbackQuery().getMessage().getMessageId()) {
-        //                            webhookService.removeWorker(update, Long.parseLong(removeWorkerTgId));
-        //                            messageDToList.remove(i);
-        //                            break;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
     }
 }

@@ -52,6 +52,14 @@ public class WorkerDTO implements Serializable {
         this.role = role;
     }
 
+    public WorkerDTO(String fullName, Long workerTgId, String role) {
+        this.fullName = fullName;
+        this.workerTgId = workerTgId;
+        this.role = role;
+    }
+
+    public WorkerDTO() {}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

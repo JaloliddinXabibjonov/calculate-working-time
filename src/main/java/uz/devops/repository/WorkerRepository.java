@@ -17,4 +17,6 @@ public interface WorkerRepository extends JpaRepository<Worker, Long>, JpaSpecif
     List<Worker> findAllByWorkerTgId(@NotNull Long workerTgId);
 
     Set<Worker> findAllByRole(String boss);
+
+    void deleteByWorkerTgId(@NotNull Long workerTgId);
 }
