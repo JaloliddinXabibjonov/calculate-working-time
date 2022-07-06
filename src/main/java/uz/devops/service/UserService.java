@@ -9,6 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +23,7 @@ import uz.devops.repository.AuthorityRepository;
 import uz.devops.repository.UserRepository;
 import uz.devops.security.AuthoritiesConstants;
 import uz.devops.security.SecurityUtils;
+import uz.devops.security.jwt.TokenProvider;
 import uz.devops.service.dto.AdminUserDTO;
 import uz.devops.service.dto.UserDTO;
 
@@ -38,10 +42,18 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
+    private final TokenProvider tokenProvider;
+
+    public UserService(
+        UserRepository userRepository,
+        PasswordEncoder passwordEncoder,
+        AuthorityRepository authorityRepository,
+        TokenProvider tokenProvider
+    ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
+        this.tokenProvider = tokenProvider;
     }
 
     public Optional<User> activateRegistration(String key) {

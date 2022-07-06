@@ -2,9 +2,14 @@ package uz.devops;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.TimeZone;
 import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -14,12 +19,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import tech.jhipster.config.DefaultProfileUtil;
 import tech.jhipster.config.JHipsterConstants;
 import uz.devops.config.ApplicationProperties;
+import uz.devops.config.BotProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class })
+@EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class, BotProperties.class })
+@EnableScheduling
 public class WorkWebhookTelegramBotApp {
 
     private static final Logger log = LoggerFactory.getLogger(WorkWebhookTelegramBotApp.class);

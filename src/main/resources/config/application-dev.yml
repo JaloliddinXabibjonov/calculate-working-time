@@ -32,9 +32,9 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/WorkWebhookTelegramBot
-    username: WorkWebhookTelegramBot
-    password:
+    url: jdbc:postgresql://localhost:5432/work_w
+    username: postgres
+    password: root123
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -66,6 +66,9 @@ spring:
     locator:
       discovery:
         enabled: true
+  sql:
+    init:
+      mode: never
 
 server:
   port: 8080
@@ -114,4 +117,3 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:

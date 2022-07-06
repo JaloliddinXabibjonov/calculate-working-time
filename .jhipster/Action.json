@@ -1,0 +1,46 @@
+{
+  "applications": "*",
+  "changelogDate": "20220629051653",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "action",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "25"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "command",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "25"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "Status",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "WITH_REASON,AT_WORK,AT_LUNCH,START,AFTER_LUNCH,AFTER_WORK,GO_HOME,DISEASE,VACATION,BACK,START_BOT,DAY_INFO_TO_BOSS,ACTIVE,INACTIVE,DELETED"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": true,
+  "name": "Action",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "reason",
+      "otherEntityRelationshipName": "action",
+      "ownerSide": true,
+      "relationshipName": "reason",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

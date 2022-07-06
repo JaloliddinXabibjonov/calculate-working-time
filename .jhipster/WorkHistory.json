@@ -1,0 +1,54 @@
+{
+  "applications": "*",
+  "changelogDate": "20220629051650",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "work_history",
+  "fields": [
+    {
+      "fieldName": "start",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "toLunch",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "fromLunch",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "end",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "reasonDescription",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "Status",
+      "fieldValues": "WITH_REASON,AT_WORK,AT_LUNCH,START,AFTER_LUNCH,AFTER_WORK,GO_HOME,DISEASE,VACATION,BACK,START_BOT,DAY_INFO_TO_BOSS,ACTIVE,INACTIVE,DELETED"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": true,
+  "name": "WorkHistory",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "worker",
+      "otherEntityRelationshipName": "workHistory",
+      "relationshipName": "worker",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "reason",
+      "otherEntityRelationshipName": "workHistory",
+      "relationshipName": "reason",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

@@ -194,6 +194,17 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.authorities = authorities;
     }
 
+    public User(String login, String password, String firstName, String lastName, String email, Set<Authority> authorities) {
+        this.login = login;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.authorities = authorities;
+    }
+
+    public User() {}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

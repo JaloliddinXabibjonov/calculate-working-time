@@ -11,6 +11,8 @@ public class UserDTO {
 
     private String login;
 
+    private String password;
+
     public UserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -19,6 +21,19 @@ public class UserDTO {
         this.id = user.getId();
         // Customize it here if you need, or not, firstName/lastName/etc
         this.login = user.getLogin();
+    }
+
+    public UserDTO(String login, String password) {
+        this.login = login;
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Long getId() {

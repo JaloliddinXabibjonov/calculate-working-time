@@ -1,0 +1,51 @@
+{
+  "applications": "*",
+  "changelogDate": "20220629051652",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "reason",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "Status",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "WITH_REASON,AT_WORK,AT_LUNCH,START,AFTER_LUNCH,AFTER_WORK,GO_HOME,DISEASE,VACATION,BACK,START_BOT,DAY_INFO_TO_BOSS,ACTIVE,INACTIVE,DELETED"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": true,
+  "name": "Reason",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "reason",
+      "otherEntityRelationshipName": "reason",
+      "relationshipName": "parent",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "action",
+      "otherEntityRelationshipName": "reason",
+      "ownerSide": false,
+      "relationshipName": "action",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "workHistory",
+      "otherEntityRelationshipName": "reason",
+      "relationshipName": "workHistory",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "serviceImpl"
+}
