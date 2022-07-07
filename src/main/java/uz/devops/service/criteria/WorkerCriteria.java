@@ -32,7 +32,7 @@ public class WorkerCriteria implements Serializable, Criteria {
 
     private LongFilter workerTgId;
 
-    private StringFilter role;
+    private LongFilter roleId;
 
     private LongFilter workHistoryId;
 
@@ -44,7 +44,7 @@ public class WorkerCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.fullName = other.fullName == null ? null : other.fullName.copy();
         this.workerTgId = other.workerTgId == null ? null : other.workerTgId.copy();
-        this.role = other.role == null ? null : other.role.copy();
+        this.roleId = other.roleId == null ? null : other.roleId.copy();
         this.workHistoryId = other.workHistoryId == null ? null : other.workHistoryId.copy();
         this.distinct = other.distinct;
     }
@@ -99,19 +99,19 @@ public class WorkerCriteria implements Serializable, Criteria {
         this.workerTgId = workerTgId;
     }
 
-    public StringFilter getRole() {
-        return role;
+    public LongFilter getRoleId() {
+        return roleId;
     }
 
-    public StringFilter role() {
-        if (role == null) {
-            role = new StringFilter();
+    public LongFilter roleId() {
+        if (roleId == null) {
+            roleId = new LongFilter();
         }
-        return role;
+        return roleId;
     }
 
-    public void setRole(StringFilter role) {
-        this.role = role;
+    public void setRoleId(LongFilter roleId) {
+        this.roleId = roleId;
     }
 
     public LongFilter getWorkHistoryId() {
@@ -150,7 +150,7 @@ public class WorkerCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(fullName, that.fullName) &&
             Objects.equals(workerTgId, that.workerTgId) &&
-            Objects.equals(role, that.role) &&
+            Objects.equals(roleId, that.roleId) &&
             Objects.equals(workHistoryId, that.workHistoryId) &&
             Objects.equals(distinct, that.distinct)
         );
@@ -158,7 +158,7 @@ public class WorkerCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fullName, workerTgId, role, workHistoryId, distinct);
+        return Objects.hash(id, fullName, workerTgId, roleId, workHistoryId, distinct);
     }
 
     // prettier-ignore
@@ -168,7 +168,7 @@ public class WorkerCriteria implements Serializable, Criteria {
             (id != null ? "id=" + id + ", " : "") +
             (fullName != null ? "fullName=" + fullName + ", " : "") +
             (workerTgId != null ? "workerTgId=" + workerTgId + ", " : "") +
-            (role != null ? "role=" + role + ", " : "") +
+            (roleId != null ? "roleId=" + roleId + ", " : "") +
             (workHistoryId != null ? "workHistoryId=" + workHistoryId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";

@@ -69,16 +69,20 @@ public class WorkerServiceImpl implements WorkerService {
         return workerRepository.findAll(pageable).map(workerMapper::toDto);
     }
 
+    public Page<WorkerDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return workerRepository.findAllWithEagerRelationships(pageable).map(workerMapper::toDto);
+    }
+
     @Override
     @Transactional(readOnly = true)
     public Optional<WorkerDTO> findOne(Long id) {
         log.debug("Request to get Worker : {}", id);
-        return workerRepository.findById(id).map(workerMapper::toDto);
+        return workerRepository.findOneWithEagerRelationships(id).map(workerMapper::toDto);
     }
 
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Worker : {}", id);
-        workerRepository.deleteByWorkerTgId(id);
+        workerRepository.deleteById(id);
     }
 }

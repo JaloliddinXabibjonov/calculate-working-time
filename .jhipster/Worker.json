@@ -15,10 +15,6 @@
       "fieldName": "workerTgId",
       "fieldType": "Long",
       "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "role",
-      "fieldType": "String"
     }
   ],
   "fluentMethods": true,
@@ -27,6 +23,13 @@
   "pagination": "pagination",
   "readOnly": false,
   "relationships": [
+    {
+      "otherEntityName": "role",
+      "otherEntityRelationshipName": "worker",
+      "ownerSide": true,
+      "relationshipName": "role",
+      "relationshipType": "many-to-many"
+    },
     {
       "otherEntityName": "workHistory",
       "otherEntityRelationshipName": "worker",

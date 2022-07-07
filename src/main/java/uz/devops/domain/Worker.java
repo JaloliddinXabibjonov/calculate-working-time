@@ -5,7 +5,9 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import uz.devops.domain.enumeration.Status;
 
 /**
  * A Worker.
@@ -31,11 +33,11 @@ public class Worker implements Serializable {
     @Column(name = "worker_tg_id", nullable = false)
     private Long workerTgId;
 
-    @Column(name = "role")
+    @Column(nullable = false)
     private String role;
 
-    @Column(unique = true)
-    private Long chatId;
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.ACTIVE;
 
     @OneToMany(mappedBy = "worker")
     @JsonIgnoreProperties(value = { "worker", "reason" }, allowSetters = true)
@@ -45,18 +47,19 @@ public class Worker implements Serializable {
 
     public Worker() {}
 
-    public Worker(String fullName, Long workerTgId, String role) {
+    public Worker(String fullName, Long workerTgId, String role, Status status) {
         this.fullName = fullName;
         this.workerTgId = workerTgId;
         this.role = role;
+        this.status = status;
     }
 
-    public Long getChatId() {
-        return chatId;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setChatId(Long chatId) {
-        this.chatId = chatId;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public Long getId() {
@@ -99,12 +102,7 @@ public class Worker implements Serializable {
     }
 
     public String getRole() {
-        return this.role;
-    }
-
-    public Worker role(String role) {
-        this.setRole(role);
-        return this;
+        return role;
     }
 
     public void setRole(String role) {
@@ -168,7 +166,6 @@ public class Worker implements Serializable {
             "id=" + getId() +
             ", fullName='" + getFullName() + "'" +
             ", workerTgId=" + getWorkerTgId() +
-            ", role='" + getRole() + "'" +
             "}";
     }
 }
