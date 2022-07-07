@@ -8,7 +8,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -30,7 +33,6 @@ import uz.devops.service.dto.*;
 import uz.devops.service.impl.WorkHistoryServiceImpl;
 import uz.devops.service.impl.WorkerServiceImpl;
 
-@Slf4j
 @Service
 public class WebhookService {
 
@@ -38,8 +40,13 @@ public class WebhookService {
     //    private final ZoneId zoneId = ZoneId.of("Asia/Tashkent");
     private final SendMessage sendMessage = new SendMessage();
 
+    private final Logger log = LoggerFactory.getLogger(WebhookService.class);
+
     @Autowired
     ButtonService buttonService;
+
+    @Autowired
+    SendToTelegram sendToTelegram;
 
     @Autowired
     WorkHistoryRepository workHistoryRepository;
@@ -72,23 +79,19 @@ public class WebhookService {
     EndLunch endLunch;
 
     public void startBot(Update update, String message, Worker worker, boolean checkBoss) {
-        startBot.start(update, message, worker, checkBoss, sendMessage);
-        sendToTelegram();
+        startBot.reply(update, message, worker, checkBoss, sendMessage);
     }
 
     public void startWork(Update update, String message, Worker worker, boolean checkBoss) {
-        startWork.start(update, message, worker, checkBoss, sendMessage);
-        sendToTelegram();
+        startWork.reply(update, message, worker, checkBoss, sendMessage);
     }
 
     public void startLunch(Update update, String message, Worker worker, boolean checkBoss) {
-        startLunch.start(update, message, worker, checkBoss, sendMessage);
-        sendToTelegram();
+        startLunch.reply(update, message, worker, checkBoss, sendMessage);
     }
 
     public void endLunch(Update update, String message, Worker worker, boolean checkBoss) {
-        endLunch.start(update, message, worker, checkBoss, sendMessage);
-        sendToTelegram();
+        endLunch.reply(update, message, worker, checkBoss, sendMessage);
     }
 
     public void workFinished(Update update, Worker worker, boolean check) {
@@ -118,8 +121,8 @@ public class WebhookService {
             ? buttonService.buttons(Status.START, Status.MANAGING)
             : buttonService.buttons(Status.START, Status.START);
         sendMessage.setReplyMarkup(replyKeyboardMarkup1.getKeyboard().size() > 0 ? replyKeyboardMarkup1 : null);
-        sendToTelegram();
         System.out.println(update.getMessage().toString());
+        sendToTelegram();
     }
 
     private void sendToTelegram() {
@@ -135,8 +138,8 @@ public class WebhookService {
         sendMessage.setText("Kelolmaslik sababingizni tanlang: ");
         ReplyKeyboardMarkup replyKeyboardMarkup1 = buttonService.buttonsOfReason(Status.ACTIVE);
         sendMessage.setReplyMarkup(replyKeyboardMarkup1.getKeyboard().size() > 0 ? replyKeyboardMarkup1 : null);
-        sendToTelegram();
         System.out.println(update.getMessage().toString());
+        sendToTelegram();
     }
 
     public void askDescriptionOfReason(Update update, Worker worker, String message) {
@@ -296,11 +299,7 @@ public class WebhookService {
         Worker worker = workerRepository.getByWorkerTgId(removeWorkerTgId);
         worker.setStatus(Status.DELETED);
         workerRepository.save(worker);
-        restTemplate.postForObject(
-            Constants.TELEGRAM_BOT_URL + Constants.TELEGRAM_BOT_TOKEN + "/sendMessage",
-            sendMessage,
-            ResultTelegram.class
-        );
+        sendToTelegram();
     }
 
     public void addWorker(Update update, WorkerDTO workerDTO) {
