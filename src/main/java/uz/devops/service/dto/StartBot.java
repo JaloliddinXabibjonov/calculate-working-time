@@ -23,9 +23,9 @@ public class StartBot extends AbstractBot {
     }
 
     @Override
-    public void start(Update update, String message, Worker worker, boolean checkBoss, SendMessage sendMessage) {
-        super.start(update, message, worker, checkBoss, sendMessage);
+    public void reply(Update update, String message, Worker worker, boolean checkBoss, SendMessage sendMessage) {
         botService(update, worker, checkBoss, sendMessage);
+        super.reply(update, message, worker, checkBoss, sendMessage);
     }
 
     @Override
