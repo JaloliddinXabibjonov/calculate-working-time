@@ -96,9 +96,12 @@ public class WorkerQueryService extends QueryService<Worker> {
             if (criteria.getWorkerTgId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getWorkerTgId(), Worker_.workerTgId));
             }
-            if (criteria.getRole() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getRole(), Worker_.role));
-            }
+            //            if (criteria.getRoleId() != null) {
+            //                specification =
+            //                    specification.and(
+            //                        buildSpecification(criteria.getRoleId(), root -> root.join(Worker_.roles, JoinType.LEFT).get(Role_.id))
+            //                    );
+            //            }
             if (criteria.getWorkHistoryId() != null) {
                 specification =
                     specification.and(

@@ -1,7 +1,9 @@
 package uz.devops.service.dto;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import javax.validation.constraints.*;
 
 /**
@@ -19,6 +21,20 @@ public class WorkerDTO implements Serializable {
     private Long workerTgId;
 
     private String role;
+
+    public WorkerDTO(String fullName, Long workerTgId, String role) {
+        this.fullName = fullName;
+        this.workerTgId = workerTgId;
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public Long getId() {
         return id;
@@ -42,14 +58,6 @@ public class WorkerDTO implements Serializable {
 
     public void setWorkerTgId(Long workerTgId) {
         this.workerTgId = workerTgId;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     @Override
@@ -80,7 +88,7 @@ public class WorkerDTO implements Serializable {
             "id=" + getId() +
             ", fullName='" + getFullName() + "'" +
             ", workerTgId=" + getWorkerTgId() +
-            ", role='" + getRole() + "'" +
+            ", roles=" + getRole() +
             "}";
     }
 }

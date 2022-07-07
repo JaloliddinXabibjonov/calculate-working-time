@@ -1,0 +1,29 @@
+{
+  "applications": "*",
+  "changelogDate": "20220707111420",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "role",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "RoleName",
+      "fieldValues": "BOSS,USER"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": true,
+  "name": "Role",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "worker",
+      "otherEntityRelationshipName": "role",
+      "ownerSide": false,
+      "relationshipName": "worker",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "service": "serviceImpl"
+}

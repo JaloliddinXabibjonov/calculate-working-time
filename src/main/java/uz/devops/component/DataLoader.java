@@ -35,8 +35,8 @@ public class DataLoader implements CommandLineRunner {
             reasonRepository.save(new Reason(3L, "Sababli", Status.ACTIVE));
             reasonRepository.save(new Reason(4L, "Orqaga", Status.ACTIVE));
 
-            workerRepository.save(new Worker("Jaloliddin", 573492532L, "User"));
-            workerRepository.save(new Worker("Jaloliddin", 5129267392L, "Boss"));
+            workerRepository.save(new Worker("Jaloliddin", 573492532L, "User", Status.ACTIVE));
+            workerRepository.save(new Worker("Jaloliddin", 5129267392L, "Boss", Status.ACTIVE));
 
             actionRepository.save(new Action("Ishga keldim", "startWork", Status.START));
             actionRepository.save(new Action("Borolmayman", "dontGo", Status.START));

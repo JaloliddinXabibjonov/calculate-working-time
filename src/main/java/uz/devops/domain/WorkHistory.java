@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.Instant;
 import javax.persistence.*;
+import org.hibernate.annotations.Cascade;
 import uz.devops.domain.enumeration.Status;
 
 /**

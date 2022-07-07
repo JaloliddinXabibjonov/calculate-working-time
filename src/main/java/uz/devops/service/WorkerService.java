@@ -42,6 +42,14 @@ public interface WorkerService {
     Page<WorkerDTO> findAll(Pageable pageable);
 
     /**
+     * Get all the workers with eager load of many-to-many relationships.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    Page<WorkerDTO> findAllWithEagerRelationships(Pageable pageable);
+
+    /**
      * Get the "id" worker.
      *
      * @param id the id of the entity.

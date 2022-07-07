@@ -2,17 +2,23 @@ package uz.devops.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,7 +27,7 @@ import uz.devops.IntegrationTest;
 import uz.devops.domain.WorkHistory;
 import uz.devops.domain.Worker;
 import uz.devops.repository.WorkerRepository;
-import uz.devops.service.criteria.WorkerCriteria;
+import uz.devops.service.WorkerService;
 import uz.devops.service.dto.WorkerDTO;
 import uz.devops.service.mapper.WorkerMapper;
 
@@ -29,6 +35,7 @@ import uz.devops.service.mapper.WorkerMapper;
  * Integration tests for the {@link WorkerResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class WorkerResourceIT {
@@ -40,9 +47,6 @@ class WorkerResourceIT {
     private static final Long UPDATED_WORKER_TG_ID = 2L;
     private static final Long SMALLER_WORKER_TG_ID = 1L - 1L;
 
-    private static final String DEFAULT_ROLE = "AAAAAAAAAA";
-    private static final String UPDATED_ROLE = "BBBBBBBBBB";
-
     private static final String ENTITY_API_URL = "/api/workers";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -52,8 +56,14 @@ class WorkerResourceIT {
     @Autowired
     private WorkerRepository workerRepository;
 
+    @Mock
+    private WorkerRepository workerRepositoryMock;
+
     @Autowired
     private WorkerMapper workerMapper;
+
+    @Mock
+    private WorkerService workerServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -70,7 +80,7 @@ class WorkerResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Worker createEntity(EntityManager em) {
-        Worker worker = new Worker().fullName(DEFAULT_FULL_NAME).workerTgId(DEFAULT_WORKER_TG_ID).role(DEFAULT_ROLE);
+        Worker worker = new Worker().fullName(DEFAULT_FULL_NAME).workerTgId(DEFAULT_WORKER_TG_ID);
         return worker;
     }
 
@@ -81,7 +91,7 @@ class WorkerResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Worker createUpdatedEntity(EntityManager em) {
-        Worker worker = new Worker().fullName(UPDATED_FULL_NAME).workerTgId(UPDATED_WORKER_TG_ID).role(UPDATED_ROLE);
+        Worker worker = new Worker().fullName(UPDATED_FULL_NAME).workerTgId(UPDATED_WORKER_TG_ID);
         return worker;
     }
 
@@ -106,7 +116,6 @@ class WorkerResourceIT {
         Worker testWorker = workerList.get(workerList.size() - 1);
         assertThat(testWorker.getFullName()).isEqualTo(DEFAULT_FULL_NAME);
         assertThat(testWorker.getWorkerTgId()).isEqualTo(DEFAULT_WORKER_TG_ID);
-        assertThat(testWorker.getRole()).isEqualTo(DEFAULT_ROLE);
     }
 
     @Test
@@ -177,8 +186,25 @@ class WorkerResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(worker.getId().intValue())))
             .andExpect(jsonPath("$.[*].fullName").value(hasItem(DEFAULT_FULL_NAME)))
-            .andExpect(jsonPath("$.[*].workerTgId").value(hasItem(DEFAULT_WORKER_TG_ID.intValue())))
-            .andExpect(jsonPath("$.[*].role").value(hasItem(DEFAULT_ROLE)));
+            .andExpect(jsonPath("$.[*].workerTgId").value(hasItem(DEFAULT_WORKER_TG_ID.intValue())));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllWorkersWithEagerRelationshipsIsEnabled() throws Exception {
+        when(workerServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restWorkerMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(workerServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllWorkersWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(workerServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restWorkerMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(workerServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @Test
@@ -194,8 +220,7 @@ class WorkerResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(worker.getId().intValue()))
             .andExpect(jsonPath("$.fullName").value(DEFAULT_FULL_NAME))
-            .andExpect(jsonPath("$.workerTgId").value(DEFAULT_WORKER_TG_ID.intValue()))
-            .andExpect(jsonPath("$.role").value(DEFAULT_ROLE));
+            .andExpect(jsonPath("$.workerTgId").value(DEFAULT_WORKER_TG_ID.intValue()));
     }
 
     @Test
@@ -403,77 +428,25 @@ class WorkerResourceIT {
     void getAllWorkersByRoleIsEqualToSomething() throws Exception {
         // Initialize the database
         workerRepository.saveAndFlush(worker);
-
-        // Get all the workerList where role equals to DEFAULT_ROLE
-        defaultWorkerShouldBeFound("role.equals=" + DEFAULT_ROLE);
-
-        // Get all the workerList where role equals to UPDATED_ROLE
-        defaultWorkerShouldNotBeFound("role.equals=" + UPDATED_ROLE);
-    }
-
-    @Test
-    @Transactional
-    void getAllWorkersByRoleIsNotEqualToSomething() throws Exception {
-        // Initialize the database
+        Role role;
+        if (TestUtil.findAll(em, Role.class).isEmpty()) {
+            role = RoleResourceIT.createEntity(em);
+            em.persist(role);
+            em.flush();
+        } else {
+            role = TestUtil.findAll(em, Role.class).get(0);
+        }
+        em.persist(role);
+        em.flush();
+        worker.addRole(role);
         workerRepository.saveAndFlush(worker);
+        Long roleId = role.getId();
 
-        // Get all the workerList where role not equals to DEFAULT_ROLE
-        defaultWorkerShouldNotBeFound("role.notEquals=" + DEFAULT_ROLE);
+        // Get all the workerList where role equals to roleId
+        defaultWorkerShouldBeFound("roleId.equals=" + roleId);
 
-        // Get all the workerList where role not equals to UPDATED_ROLE
-        defaultWorkerShouldBeFound("role.notEquals=" + UPDATED_ROLE);
-    }
-
-    @Test
-    @Transactional
-    void getAllWorkersByRoleIsInShouldWork() throws Exception {
-        // Initialize the database
-        workerRepository.saveAndFlush(worker);
-
-        // Get all the workerList where role in DEFAULT_ROLE or UPDATED_ROLE
-        defaultWorkerShouldBeFound("role.in=" + DEFAULT_ROLE + "," + UPDATED_ROLE);
-
-        // Get all the workerList where role equals to UPDATED_ROLE
-        defaultWorkerShouldNotBeFound("role.in=" + UPDATED_ROLE);
-    }
-
-    @Test
-    @Transactional
-    void getAllWorkersByRoleIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        workerRepository.saveAndFlush(worker);
-
-        // Get all the workerList where role is not null
-        defaultWorkerShouldBeFound("role.specified=true");
-
-        // Get all the workerList where role is null
-        defaultWorkerShouldNotBeFound("role.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllWorkersByRoleContainsSomething() throws Exception {
-        // Initialize the database
-        workerRepository.saveAndFlush(worker);
-
-        // Get all the workerList where role contains DEFAULT_ROLE
-        defaultWorkerShouldBeFound("role.contains=" + DEFAULT_ROLE);
-
-        // Get all the workerList where role contains UPDATED_ROLE
-        defaultWorkerShouldNotBeFound("role.contains=" + UPDATED_ROLE);
-    }
-
-    @Test
-    @Transactional
-    void getAllWorkersByRoleNotContainsSomething() throws Exception {
-        // Initialize the database
-        workerRepository.saveAndFlush(worker);
-
-        // Get all the workerList where role does not contain DEFAULT_ROLE
-        defaultWorkerShouldNotBeFound("role.doesNotContain=" + DEFAULT_ROLE);
-
-        // Get all the workerList where role does not contain UPDATED_ROLE
-        defaultWorkerShouldBeFound("role.doesNotContain=" + UPDATED_ROLE);
+        // Get all the workerList where role equals to (roleId + 1)
+        defaultWorkerShouldNotBeFound("roleId.equals=" + (roleId + 1));
     }
 
     @Test
@@ -512,8 +485,7 @@ class WorkerResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(worker.getId().intValue())))
             .andExpect(jsonPath("$.[*].fullName").value(hasItem(DEFAULT_FULL_NAME)))
-            .andExpect(jsonPath("$.[*].workerTgId").value(hasItem(DEFAULT_WORKER_TG_ID.intValue())))
-            .andExpect(jsonPath("$.[*].role").value(hasItem(DEFAULT_ROLE)));
+            .andExpect(jsonPath("$.[*].workerTgId").value(hasItem(DEFAULT_WORKER_TG_ID.intValue())));
 
         // Check, that the count call also returns 1
         restWorkerMockMvc
@@ -561,7 +533,7 @@ class WorkerResourceIT {
         Worker updatedWorker = workerRepository.findById(worker.getId()).get();
         // Disconnect from session so that the updates on updatedWorker are not directly saved in db
         em.detach(updatedWorker);
-        updatedWorker.fullName(UPDATED_FULL_NAME).workerTgId(UPDATED_WORKER_TG_ID).role(UPDATED_ROLE);
+        updatedWorker.fullName(UPDATED_FULL_NAME).workerTgId(UPDATED_WORKER_TG_ID);
         WorkerDTO workerDTO = workerMapper.toDto(updatedWorker);
 
         restWorkerMockMvc
@@ -578,7 +550,6 @@ class WorkerResourceIT {
         Worker testWorker = workerList.get(workerList.size() - 1);
         assertThat(testWorker.getFullName()).isEqualTo(UPDATED_FULL_NAME);
         assertThat(testWorker.getWorkerTgId()).isEqualTo(UPDATED_WORKER_TG_ID);
-        assertThat(testWorker.getRole()).isEqualTo(UPDATED_ROLE);
     }
 
     @Test
@@ -658,7 +629,7 @@ class WorkerResourceIT {
         Worker partialUpdatedWorker = new Worker();
         partialUpdatedWorker.setId(worker.getId());
 
-        partialUpdatedWorker.fullName(UPDATED_FULL_NAME).role(UPDATED_ROLE);
+        partialUpdatedWorker.fullName(UPDATED_FULL_NAME);
 
         restWorkerMockMvc
             .perform(
@@ -674,7 +645,6 @@ class WorkerResourceIT {
         Worker testWorker = workerList.get(workerList.size() - 1);
         assertThat(testWorker.getFullName()).isEqualTo(UPDATED_FULL_NAME);
         assertThat(testWorker.getWorkerTgId()).isEqualTo(DEFAULT_WORKER_TG_ID);
-        assertThat(testWorker.getRole()).isEqualTo(UPDATED_ROLE);
     }
 
     @Test
@@ -689,7 +659,7 @@ class WorkerResourceIT {
         Worker partialUpdatedWorker = new Worker();
         partialUpdatedWorker.setId(worker.getId());
 
-        partialUpdatedWorker.fullName(UPDATED_FULL_NAME).workerTgId(UPDATED_WORKER_TG_ID).role(UPDATED_ROLE);
+        partialUpdatedWorker.fullName(UPDATED_FULL_NAME).workerTgId(UPDATED_WORKER_TG_ID);
 
         restWorkerMockMvc
             .perform(
@@ -705,7 +675,6 @@ class WorkerResourceIT {
         Worker testWorker = workerList.get(workerList.size() - 1);
         assertThat(testWorker.getFullName()).isEqualTo(UPDATED_FULL_NAME);
         assertThat(testWorker.getWorkerTgId()).isEqualTo(UPDATED_WORKER_TG_ID);
-        assertThat(testWorker.getRole()).isEqualTo(UPDATED_ROLE);
     }
 
     @Test
