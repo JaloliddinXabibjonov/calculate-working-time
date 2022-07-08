@@ -16,13 +16,13 @@ import uz.devops.repository.ReasonRepository;
 public class ButtonService {
 
     @Autowired
-    ReasonRepository reasonRepository;
+    private ReasonRepository reasonRepository;
 
     @Autowired
-    ActionRepository actionRepository;
+    private ActionRepository actionRepository;
 
     @Autowired
-    ReplyKeyboardMarkup replyKeyboardMarkup;
+    private ReplyKeyboardMarkup replyKeyboardMarkup;
 
     public ReplyKeyboardMarkup buttonsOfReason(Status status) {
         List<KeyboardRow> keyboard = new ArrayList<>();
@@ -54,7 +54,7 @@ public class ButtonService {
         return replyKeyboardMarkup;
     }
 
-    ReplyKeyboardMarkup buttons(Status status) {
+    public ReplyKeyboardMarkup buttons(Status status) {
         List<KeyboardRow> keyboard = new ArrayList<>();
         replyKeyboardMarkup.setSelective(true);
         replyKeyboardMarkup.setResizeKeyboard(true);

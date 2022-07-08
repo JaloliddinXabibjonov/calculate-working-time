@@ -20,11 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import uz.devops.IntegrationTest;
 import uz.devops.domain.Action;
 import uz.devops.domain.Reason;
-import uz.devops.domain.Reason;
 import uz.devops.domain.WorkHistory;
 import uz.devops.domain.enumeration.Status;
 import uz.devops.repository.ReasonRepository;
-import uz.devops.service.criteria.ReasonCriteria;
 import uz.devops.service.dto.ReasonDTO;
 import uz.devops.service.mapper.ReasonMapper;
 
@@ -43,7 +41,7 @@ class ReasonResourceIT {
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
     private static final Status DEFAULT_STATUS = Status.WITH_REASON;
-    private static final Status UPDATED_STATUS = Status.AT_WORK;
+    private static final Status UPDATED_STATUS = Status.START_LUNCH;
 
     private static final String ENTITY_API_URL = "/api/reasons";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";

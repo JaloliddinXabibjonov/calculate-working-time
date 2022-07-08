@@ -1,46 +1,34 @@
-package uz.devops.service.dto;
+package uz.devops.service;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import uz.devops.component.DataLoader;
 import uz.devops.domain.WorkHistory;
 import uz.devops.domain.Worker;
 import uz.devops.domain.enumeration.Status;
 import uz.devops.repository.WorkHistoryRepository;
-import uz.devops.service.ButtonService;
 
-@Service
-public class EndLunch extends AbstractBot {
+@Service(DataLoader.END_LUNCH)
+public class EndLunchCommandService extends AbstractBot {
 
     @Autowired
-    ButtonService buttonService;
+    private ButtonService buttonService;
 
-    private final WorkHistoryRepository workHistoryRepository;
-
-    public EndLunch(WorkHistoryRepository workHistoryRepository) {
-        this.workHistoryRepository = workHistoryRepository;
-    }
-
-    private final ZoneId zoneId = ZoneId.of("Asia/Tashkent");
+    @Autowired
+    private WorkHistoryRepository workHistoryRepository;
 
     @Override
-    public void reply(Update update, String message, Worker worker, boolean checkBoss, SendMessage sendMessage) {
-        botService(update, worker, checkBoss, sendMessage);
-        super.reply(update, message, worker, checkBoss, sendMessage);
-    }
-
-    @Override
-    public void botService(Update update, Worker worker, boolean checkBoss, SendMessage sendMessage) {
+    protected void process(Update update, Worker worker, boolean checkBoss, SendMessage sendMessage) {
         Optional<WorkHistory> optionalWorkHistory = workHistoryRepository.findTopByWorkerIdAndStartIsNotNullAndToLunchIsNotNullAndStartBetweenOrderByStartDesc(
             worker.getId(),
-            LocalDate.now().atStartOfDay(zoneId).toInstant(),
-            LocalDate.now().atStartOfDay(zoneId).plusSeconds(86400).toInstant()
+            LocalDate.now().atStartOfDay(DataLoader.ZONE_ID).toInstant(),
+            LocalDate.now().atStartOfDay(DataLoader.ZONE_ID).plusSeconds(86400).toInstant()
         );
         if (optionalWorkHistory.isPresent()) {
             WorkHistory workHistory = optionalWorkHistory.get();
@@ -48,6 +36,7 @@ public class EndLunch extends AbstractBot {
             workHistory.setWorker(worker);
             workHistory.setFromLunch(Instant.now());
             workHistoryRepository.save(workHistory);
+            sendMessage.setText("Kuningiz barakali o'tsin");
         } else sendMessage.setText("Siz hali tushlikka chiqmagansiz!");
         ReplyKeyboardMarkup replyKeyboardMarkup1 = checkBoss
             ? buttonService.buttons(Status.GO_HOME, Status.MANAGING)

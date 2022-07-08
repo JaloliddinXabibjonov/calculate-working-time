@@ -25,7 +25,6 @@ import uz.devops.domain.WorkHistory;
 import uz.devops.domain.Worker;
 import uz.devops.domain.enumeration.Status;
 import uz.devops.repository.WorkHistoryRepository;
-import uz.devops.service.criteria.WorkHistoryCriteria;
 import uz.devops.service.dto.WorkHistoryDTO;
 import uz.devops.service.mapper.WorkHistoryMapper;
 
@@ -53,7 +52,7 @@ class WorkHistoryResourceIT {
     private static final String UPDATED_REASON_DESCRIPTION = "BBBBBBBBBB";
 
     private static final Status DEFAULT_STATUS = Status.WITH_REASON;
-    private static final Status UPDATED_STATUS = Status.AT_WORK;
+    private static final Status UPDATED_STATUS = Status.START_LUNCH;
 
     private static final String ENTITY_API_URL = "/api/work-histories";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";

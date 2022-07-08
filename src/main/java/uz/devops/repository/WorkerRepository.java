@@ -32,5 +32,5 @@ public interface WorkerRepository
 
     List<Worker> findAllByWorkerTgIdAndStatus(Long id, Status active);
 
-    Worker getByWorkerTgId(Long removeWorkerTgId);
+    Worker getByWorkerTgIdAndRole(Long removeWorkerTgId, String role);
 }

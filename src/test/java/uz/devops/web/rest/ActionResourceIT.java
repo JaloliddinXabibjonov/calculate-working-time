@@ -22,7 +22,6 @@ import uz.devops.domain.Action;
 import uz.devops.domain.Reason;
 import uz.devops.domain.enumeration.Status;
 import uz.devops.repository.ActionRepository;
-import uz.devops.service.criteria.ActionCriteria;
 import uz.devops.service.dto.ActionDTO;
 import uz.devops.service.mapper.ActionMapper;
 
@@ -44,7 +43,7 @@ class ActionResourceIT {
     private static final String UPDATED_COMMAND = "BBBBBBBBBB";
 
     private static final Status DEFAULT_STATUS = Status.WITH_REASON;
-    private static final Status UPDATED_STATUS = Status.AT_WORK;
+    private static final Status UPDATED_STATUS = Status.START_LUNCH;
 
     private static final String ENTITY_API_URL = "/api/actions";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
