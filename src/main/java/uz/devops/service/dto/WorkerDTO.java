@@ -28,6 +28,8 @@ public class WorkerDTO implements Serializable {
         this.role = role;
     }
 
+    public WorkerDTO() {}
+
     public String getRole() {
         return role;
     }

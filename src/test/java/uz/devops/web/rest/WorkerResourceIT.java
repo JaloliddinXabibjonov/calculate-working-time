@@ -425,32 +425,6 @@ class WorkerResourceIT {
 
     @Test
     @Transactional
-    void getAllWorkersByRoleIsEqualToSomething() throws Exception {
-        // Initialize the database
-        workerRepository.saveAndFlush(worker);
-        Role role;
-        if (TestUtil.findAll(em, Role.class).isEmpty()) {
-            role = RoleResourceIT.createEntity(em);
-            em.persist(role);
-            em.flush();
-        } else {
-            role = TestUtil.findAll(em, Role.class).get(0);
-        }
-        em.persist(role);
-        em.flush();
-        worker.addRole(role);
-        workerRepository.saveAndFlush(worker);
-        Long roleId = role.getId();
-
-        // Get all the workerList where role equals to roleId
-        defaultWorkerShouldBeFound("roleId.equals=" + roleId);
-
-        // Get all the workerList where role equals to (roleId + 1)
-        defaultWorkerShouldNotBeFound("roleId.equals=" + (roleId + 1));
-    }
-
-    @Test
-    @Transactional
     void getAllWorkersByWorkHistoryIsEqualToSomething() throws Exception {
         // Initialize the database
         workerRepository.saveAndFlush(worker);
