@@ -9,9 +9,8 @@ import uz.devops.config.Constants;
 public class SendToTelegram {
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final SendMessage sendMessage = new SendMessage();
 
-    public void send() {
+    public void send(SendMessage sendMessage) {
         restTemplate.postForObject(
             Constants.TELEGRAM_BOT_URL + Constants.TELEGRAM_BOT_TOKEN + "/sendMessage",
             sendMessage,

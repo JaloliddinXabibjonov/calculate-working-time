@@ -25,8 +25,8 @@ public interface WorkHistoryRepository extends JpaRepository<WorkHistory, Long>,
         Instant start,
         Instant start2
     );
-    Optional<WorkHistory> findFirstByWorkerIdAndStartIsNotNullAndEndNull(Long worker_id);
-    Optional<WorkHistory> findFirstByWorkerIdAndStartIsNotNullAndReasonDescriptionIsNullAndReasonIsNotNullOrderByStart(Long worker_id);
+    Optional<WorkHistory> findFirstByWorkerIdAndStartIsNotNullAndEndNullOrderByStartDesc(Long worker_id);
+    Optional<WorkHistory> findFirstByWorkerIdAndStartIsNotNullAndReasonDescriptionIsNullAndReasonIsNotNullOrderByStartDesc(Long worker_id);
 
     Set<WorkHistory> getAllByStartBetweenOrEndBetween(Instant start, Instant start2, Instant end, Instant end2);
 }

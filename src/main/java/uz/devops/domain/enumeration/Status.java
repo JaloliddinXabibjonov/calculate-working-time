@@ -5,10 +5,10 @@ package uz.devops.domain.enumeration;
  */
 public enum Status {
     WITH_REASON,
+    START_LUNCH,
     AT_WORK,
-    AT_LUNCH,
     START,
-    AFTER_LUNCH,
+    END_LUNCH,
     AFTER_WORK,
     GO_HOME,
     DISEASE,
@@ -16,11 +16,13 @@ public enum Status {
     BACK,
     START_BOT,
     DAY_INFO_TO_BOSS,
-    ACTIVE,
-    INACTIVE,
-    DELETED,
     REPORT,
     MANAGING,
     SETTINGS,
     ANNOUNCEMENT,
+
+    //FOR MANAGING
+    ACTIVE,
+    INACTIVE,
+    DELETED,
 }

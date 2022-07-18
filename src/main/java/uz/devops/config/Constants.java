@@ -12,9 +12,8 @@ public final class Constants {
     public static final String DEFAULT_LANGUAGE = "uz-Latn-uz";
 
     public static final String TELEGRAM_BOT_URL = "https://api.telegram.org/bot";
-    //    public static final String TELEGRAM_BOT_URL_WITHOUT_BOT="https://api.telegram.org/";
+
     public static final String TELEGRAM_BOT_TOKEN = "5570415388:AAHde-Ypp1o9yF2Jr2zwOXHi_jer66PMVJg";
 
-    //    public static final String TELEGRAM_BOT_MY_URL="https://dc76-83-221-180-161.in.ngrok.io/";
     private Constants() {}
 }
