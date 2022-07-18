@@ -13,9 +13,6 @@
 # Full reference is available at:
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
-java:
-  runtime:
-    version: 11
 ---
 # Conditionally disable springdoc on missing api-docs profile
 spring:
