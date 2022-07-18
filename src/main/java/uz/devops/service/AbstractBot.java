@@ -1,13 +1,9 @@
 package uz.devops.service;
 
-import java.time.ZoneId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.client.RestTemplate;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import uz.devops.config.Constants;
 import uz.devops.domain.Worker;
-import uz.devops.service.dto.ResultTelegram;
 import uz.devops.service.dto.SendToTelegram;
 
 public abstract class AbstractBot {

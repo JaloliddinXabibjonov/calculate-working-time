@@ -16,11 +16,13 @@ public enum Status {
     BACK,
     START_BOT,
     DAY_INFO_TO_BOSS,
-    ACTIVE,
-    INACTIVE,
-    DELETED,
     REPORT,
     MANAGING,
     SETTINGS,
     ANNOUNCEMENT,
+
+    //FOR MANAGING
+    ACTIVE,
+    INACTIVE,
+    DELETED,
 }
