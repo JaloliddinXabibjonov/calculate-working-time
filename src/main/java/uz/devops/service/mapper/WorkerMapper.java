@@ -11,9 +11,9 @@ import uz.devops.service.dto.WorkerDTO;
  */
 @Mapper(componentModel = "spring")
 public interface WorkerMapper extends EntityMapper<WorkerDTO, Worker> {
-    @Mapping(target = "role", source = "role")
+    @Mapping(target = "id", source = "id")
     WorkerDTO toDto(Worker s);
 
-    @Mapping(target = "role", ignore = true)
+    @Mapping(target = "id", ignore = true)
     Worker toEntity(WorkerDTO workerDTO);
 }
