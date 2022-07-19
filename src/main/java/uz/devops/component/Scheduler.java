@@ -26,7 +26,7 @@ public class Scheduler extends AbstractBot {
         super.reply(chatId, message);
     }
 
-    @Scheduled(cron = "30 29 10 * * *")
+    @Scheduled(cron = "00 00 22 * * *")
     public void sendReport() {
         Set<Worker> allBosses = workerRepository.findAllByRoleAndStatus("Boss", Status.ACTIVE);
         for (Worker boss : allBosses) {
