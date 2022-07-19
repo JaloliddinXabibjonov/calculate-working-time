@@ -26,6 +26,7 @@ public class AddWorkerCommandService extends AbstractBot {
         inlineKeyboardButton2.setCallbackData("manager");
         List<InlineKeyboardButton> inlineKeyboardButtonsRow = new ArrayList<>();
         inlineKeyboardButtonsRow.add(inlineKeyboardButton1);
+        inlineKeyboardButtonsRow.add(inlineKeyboardButton2);
         List<List<InlineKeyboardButton>> inlineKeyboardButtonRowList = new ArrayList<>();
         inlineKeyboardButtonRowList.add(inlineKeyboardButtonsRow);
         inlineKeyboardMarkup.setKeyboard(inlineKeyboardButtonRowList);
