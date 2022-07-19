@@ -55,6 +55,7 @@ public class DataLoader implements CommandLineRunner {
             reasonRepository.save(new Reason(4L, "Orqaga", Status.ACTIVE));
 
             workerRepository.save(new Worker("Jaloliddin", 573492532L, "User", Status.ACTIVE));
+            workerRepository.save(new Worker("Jaloliddin", 573492532L, "Boss", Status.ACTIVE));
             workerRepository.save(new Worker("Jaloliddin", 5129267392L, "Boss", Status.ACTIVE));
 
             actionRepository.save(new Action("Ishga keldim", START_WORK, Status.START));
@@ -67,7 +68,7 @@ public class DataLoader implements CommandLineRunner {
             actionRepository.save(new Action("Ta'til olmoqchiman", VACATION, Status.VACATION, reasonRepository.getById(2L)));
             actionRepository.save(new Action("Sababli", WITH_REASON, Status.WITH_REASON, reasonRepository.getById(3L)));
             actionRepository.save(new Action("Orqaga", BACK, Status.BACK, reasonRepository.getById(4L)));
-            actionRepository.save(new Action("Hisobot", REPORT, Status.REPORT));
+            actionRepository.save(new Action("Hisobot", REPORT, Status.SETTINGS));
             actionRepository.save(new Action("E'lon yuborish", ANNOUNCEMENT, Status.ANNOUNCEMENT));
             actionRepository.save(new Action("Boshqaruv", MANAGING, Status.MANAGING));
             actionRepository.save(new Action("Xodim qo'shish", ADD_WORKER, Status.SETTINGS));

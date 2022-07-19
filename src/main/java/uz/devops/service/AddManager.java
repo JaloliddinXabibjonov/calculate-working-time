@@ -8,8 +8,8 @@ import uz.devops.domain.Worker;
 import uz.devops.domain.enumeration.Status;
 import uz.devops.repository.WorkerRepository;
 
-@Service(value = "workerAdd")
-public class AddWorker extends AbstractBot {
+@Service
+public class AddManager extends AbstractBot {
 
     @Autowired
     private WorkerRepository workerRepository;
@@ -20,7 +20,7 @@ public class AddWorker extends AbstractBot {
         text = text.substring(7);
         String[] split = text.split(" ");
         workerRepository.save(
-            new Worker(split[0].trim() + " " + split[1].trim(), Long.parseLong(split[split.length - 1]), "User", Status.ACTIVE)
+            new Worker(split[0].trim() + " " + split[1].trim(), Long.parseLong(split[split.length - 1]), "Boss", Status.ACTIVE)
         );
         sendMessage.setText("Xodim muvaffaqiyatli qo'shildi!");
     }
@@ -29,7 +29,7 @@ public class AddWorker extends AbstractBot {
     public void reply(Long chatId, String message) {
         super.reply(
             chatId,
-            "Xodim ma'lumotlarini kiriting(familiyasi ismi telegram id si): (+worker deb boshlang,\n Mas: +workerSodiqov Sodiq 573492532)"
+            "Boshqaruvchi ma'lumotlarini kiriting(familiyasi ismi telegram id si): (+manager deb boshlang,\n Mas: +workerSodiqov Sodiq 573492532)"
         );
     }
 }

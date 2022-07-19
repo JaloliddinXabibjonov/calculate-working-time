@@ -13,7 +13,7 @@ import uz.devops.domain.WorkHistory;
 @Repository
 public interface WorkHistoryRepository extends JpaRepository<WorkHistory, Long>, JpaSpecificationExecutor<WorkHistory> {
     boolean existsByWorkerIdAndStartIsNotNullAndStartBetween(Long worker_id, Instant start, Instant start2);
-    boolean existsByWorkerIdAndStartIsNotNullAndEndIsNullAndReasonIsNotNullAndStartBetween(Long worker_id, Instant start, Instant start2);
+    boolean existsByWorkerIdAndStartIsNotNullAndEndIsNullAndStartBetween(Long worker_id, Instant start, Instant start2);
 
     Optional<WorkHistory> findFirstByWorkerIdAndStartIsNotNullAndStartBetweenOrderByStartDesc(
         Long worker_id,
