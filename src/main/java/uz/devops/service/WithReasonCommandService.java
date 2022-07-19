@@ -14,12 +14,9 @@ public class WithReasonCommandService extends AbstractBot {
     @Autowired
     private SaveReasonService saveReasonService;
 
-    @Autowired
-    private ButtonService buttonService;
-
     @Override
     protected void process(Update update, Worker worker, boolean checkBoss, SendMessage sendMessage) {
-        sendMessage.setText("Kelolmaslik sababingizni izohlang: ");
+        sendMessage.setText("Kelolmaslik sababingizni izohlang (#izoh deb boshlang): ");
         saveReasonService.saveReason(update, worker);
         sendMessage.setReplyMarkup(new ReplyKeyboardRemove(true));
     }
