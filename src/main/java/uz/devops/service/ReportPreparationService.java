@@ -23,7 +23,9 @@ public class ReportPreparationService {
     public String prepare() {
         Set<WorkHistory> allToday = workHistoryService.getAllToday();
         String message =
-            "Sana: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy  HH:mm")) + " (Toshkent vaqti bilan)\n";
+            "Vaqt: " +
+            LocalDateTime.now().plusHours(5).format(DateTimeFormatter.ofPattern("dd/MM/yyyy  HH:mm")) +
+            " (Toshkent vaqti bilan)\n";
         if (allToday.size() > 0) {
             for (WorkHistory workHistory : allToday) {
                 String fullName = workHistory.getWorker().getFullName();

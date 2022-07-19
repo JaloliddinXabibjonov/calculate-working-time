@@ -19,10 +19,11 @@ public class AddWorkerCommandService extends AbstractBot {
     protected void process(Update update, Worker worker, boolean checkBoss, SendMessage sendMessage) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
+        InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
         inlineKeyboardButton1.setText("Xodim");
         inlineKeyboardButton1.setCallbackData("worker");
-        inlineKeyboardButton1.setText("Boshqaruvchi");
-        inlineKeyboardButton1.setCallbackData("manager");
+        inlineKeyboardButton2.setText("Boshqaruvchi");
+        inlineKeyboardButton2.setCallbackData("manager");
         List<InlineKeyboardButton> inlineKeyboardButtonsRow = new ArrayList<>();
         inlineKeyboardButtonsRow.add(inlineKeyboardButton1);
         List<List<InlineKeyboardButton>> inlineKeyboardButtonRowList = new ArrayList<>();
