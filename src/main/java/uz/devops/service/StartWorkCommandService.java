@@ -24,7 +24,7 @@ public class StartWorkCommandService extends AbstractBot {
 
     @Override
     protected void process(Update update, Worker worker, boolean checkBoss, SendMessage sendMessage) {
-        boolean exists = workHistoryRepository.existsByWorkerIdAndStartIsNotNullAndEndIsNullAndReasonIsNotNullAndStartBetween(
+        boolean exists = workHistoryRepository.existsByWorkerIdAndStartIsNotNullAndEndIsNullAndStartBetween(
             worker.getId(),
             LocalDate.now().atStartOfDay(DataLoader.ZONE_ID).toInstant(),
             LocalDate.now().atStartOfDay(DataLoader.ZONE_ID).plusSeconds(86400).toInstant()
