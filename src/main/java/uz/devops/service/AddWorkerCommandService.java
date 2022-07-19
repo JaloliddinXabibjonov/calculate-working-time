@@ -24,11 +24,13 @@ public class AddWorkerCommandService extends AbstractBot {
         inlineKeyboardButton1.setCallbackData("worker");
         inlineKeyboardButton2.setText("Boshqaruvchi");
         inlineKeyboardButton2.setCallbackData("manager");
-        List<InlineKeyboardButton> inlineKeyboardButtonsRow = new ArrayList<>();
-        inlineKeyboardButtonsRow.add(inlineKeyboardButton1);
-        inlineKeyboardButtonsRow.add(inlineKeyboardButton2);
+        List<InlineKeyboardButton> inlineKeyboardButtonsRow1 = new ArrayList<>();
+        List<InlineKeyboardButton> inlineKeyboardButtonsRow2 = new ArrayList<>();
+        inlineKeyboardButtonsRow1.add(inlineKeyboardButton1);
+        inlineKeyboardButtonsRow2.add(inlineKeyboardButton2);
         List<List<InlineKeyboardButton>> inlineKeyboardButtonRowList = new ArrayList<>();
-        inlineKeyboardButtonRowList.add(inlineKeyboardButtonsRow);
+        inlineKeyboardButtonRowList.add(inlineKeyboardButtonsRow1);
+        inlineKeyboardButtonRowList.add(inlineKeyboardButtonsRow2);
         inlineKeyboardMarkup.setKeyboard(inlineKeyboardButtonRowList);
         sendMessage.setReplyMarkup(inlineKeyboardMarkup);
         sendMessage.setText(checkBoss ? "Lavozim tanlang: " : "Noto'g'ri buyruq berildi!");
