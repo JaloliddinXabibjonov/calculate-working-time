@@ -29,6 +29,7 @@ public interface WorkerRepository
     }
 
     Set<Worker> findAllByRoleAndStatus(String role, Status status);
+    Set<Worker> findAllByStatus(Status status);
 
     List<Worker> findAllByWorkerTgIdAndStatus(Long id, Status active);
 
