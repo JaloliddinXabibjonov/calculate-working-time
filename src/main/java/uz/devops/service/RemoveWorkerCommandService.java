@@ -22,13 +22,13 @@ public class RemoveWorkerCommandService extends AbstractBot {
 
     @Override
     protected void process(Update update, Worker worker, boolean checkBoss, SendMessage sendMessage) {
-        Set<Worker> workers = workerRepository.findAllByRoleAndStatus("User", Status.ACTIVE);
+        Set<Worker> workers = workerRepository.findAllByStatus(Status.ACTIVE);
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> inlineKeyboardButtonRowList = new ArrayList<>();
         for (Worker worker1 : workers) {
             List<InlineKeyboardButton> inlineKeyboardButtonsRow = new ArrayList<>();
             InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
-            inlineKeyboardButton1.setText(worker1.getFullName());
+            inlineKeyboardButton1.setText(worker1.getFullName() + "(" + worker1.getRole() + ")");
             inlineKeyboardButton1.setCallbackData("#removeId" + worker1.getWorkerTgId());
             inlineKeyboardButtonsRow.add(inlineKeyboardButton1);
             inlineKeyboardButtonRowList.add(inlineKeyboardButtonsRow);
