@@ -45,6 +45,9 @@ public class TGService {
     @Autowired
     private SaveVacationDayService saveVacationDayService;
 
+    @Autowired
+    private AddManager addManager;
+
     public void enterUpdate(Update update) {
         if (update.hasMessage()) {
             List<Worker> workerList = workerRepository.findAllByWorkerTgIdAndStatus(update.getMessage().getFrom().getId(), Status.ACTIVE);
@@ -73,7 +76,11 @@ public class TGService {
                         saveDescriptionService.reply(update, worker, checkBoss.isCheck());
                     } else if (text.startsWith("+worker")) {
                         addWorker.reply(update, null, false);
+                    } else if (text.startsWith("+manager")) {
+                        addManager.reply(update, null, false);
                     }
+                } else if (update.getMessage().hasAudio()) {
+                    workerNotFoundService.reply(update.getMessage().getChatId(), "Noma'lum buyruq!");
                 }
             } else {
                 workerNotFoundService.reply(update, null, false);
@@ -81,6 +88,10 @@ public class TGService {
         } else if (update.hasCallbackQuery()) {
             if (update.getCallbackQuery().getData().startsWith("#removeId")) {
                 removeWorker.reply(update, null, false, true);
+            } else if (update.getCallbackQuery().getData().equals("manager")) {
+                addManager.reply(update.getCallbackQuery().getMessage().getChatId(), "");
+            } else if (update.getCallbackQuery().getData().equals("worker")) {
+                addWorker.reply(update.getCallbackQuery().getMessage().getChatId(), "");
             }
         }
     }
