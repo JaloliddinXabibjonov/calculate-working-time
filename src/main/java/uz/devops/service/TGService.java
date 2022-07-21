@@ -48,6 +48,9 @@ public class TGService {
     @Autowired
     private AddManager addManager;
 
+    @Autowired
+    InvalidCommandService invalidCommandService;
+
     public void enterUpdate(Update update) {
         if (update.hasMessage()) {
             List<Worker> workerList = workerRepository.findAllByWorkerTgIdAndStatus(update.getMessage().getFrom().getId(), Status.ACTIVE);
@@ -69,7 +72,6 @@ public class TGService {
                             }
                         }
                     }
-
                     if (text.endsWith("kun")) {
                         saveVacationDayService.reply(update, worker, checkBoss.isCheck());
                     } else if (text.startsWith("#izoh")) {
@@ -78,6 +80,8 @@ public class TGService {
                         addWorker.reply(update, null, false);
                     } else if (text.startsWith("+manager")) {
                         addManager.reply(update, null, false);
+                    } else {
+                        invalidCommandService.reply(update, worker, checkBoss.isCheck());
                     }
                 } else if (update.getMessage().hasAudio()) {
                     workerNotFoundService.reply(update.getMessage().getChatId(), "Noma'lum buyruq!");
