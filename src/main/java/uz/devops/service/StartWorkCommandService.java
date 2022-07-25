@@ -30,7 +30,7 @@ public class StartWorkCommandService extends AbstractBot {
             LocalDate.now().atStartOfDay(DataLoader.ZONE_ID).plusSeconds(86400).toInstant()
         );
         if (!exists) {
-            workHistoryRepository.save(new WorkHistory(Instant.now(), Status.ACTIVE, worker));
+            workHistoryRepository.save(new WorkHistory(Instant.now(), Status.AT_WORK, worker));
             sendMessage.setText("Kun davomida yaxshi kayfiyat tilaymiz!");
         } else {
             sendMessage.setText("Siz allaqachon ishga kelgansiz!");

@@ -32,7 +32,7 @@ public class StartLunchCommandService extends AbstractBot {
         );
         if (optionalWorkHistory.isPresent()) {
             WorkHistory workHistory = optionalWorkHistory.get();
-            workHistory.setStatus(Status.ACTIVE);
+            workHistory.setStatus(Status.START_LUNCH);
             workHistory.setWorker(worker);
             workHistory.setToLunch(Instant.now());
             workHistoryRepository.save(workHistory);
