@@ -14,7 +14,7 @@ public final class Constants {
     public static final String TELEGRAM_BOT_URL = "https://api.telegram.org/bot";
 
     //    public static final String TELEGRAM_BOT_TOKEN = "5570415388:AAHde-Ypp1o9yF2Jr2zwOXHi_jer66PMVJg";
-    public static final String TELEGRAM_BOT_TOKEN = "5444907707:AAGWjD9gZWRp5vqoBh4UE18Nl9B6xj0bKy0";
+    public static final String TELEGRAM_BOT_TOKEN = "5518456891:AAHKde94ohbZ8RX1X9P4y5VCYwSb6LRhWk0";
 
     private Constants() {}
 }

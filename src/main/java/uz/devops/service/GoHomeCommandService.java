@@ -35,7 +35,7 @@ public class GoHomeCommandService extends AbstractBot {
             WorkHistory workHistory = optionalWorkHistory.get();
             workHistory.setWorker(worker);
             workHistory.setEnd(Instant.now());
-            workHistory.setStatus(Status.ACTIVE);
+            workHistory.setStatus(Status.GO_HOME);
             WorkHistory savedWorkHistory = workHistoryRepository.save(workHistory);
 
             WorkingTimeDTO workingTimeDTO = workingTimeCounterService.counter(savedWorkHistory);

@@ -29,7 +29,7 @@ public class AddManager extends AbstractBot {
     public void reply(Long chatId, String message) {
         super.reply(
             chatId,
-            "Boshqaruvchi ma'lumotlarini kiriting(familiyasi ismi telegram id si): (+manager deb boshlang,\n Mas: +workerSodiqov Sodiq 573492532)"
+            "Boshqaruvchi ma'lumotlarini kiriting(familiyasi ismi telegram id si): (+manager deb boshlang,\n Mas: +managerSodiqov Sodiq 573492532)"
         );
     }
 }
