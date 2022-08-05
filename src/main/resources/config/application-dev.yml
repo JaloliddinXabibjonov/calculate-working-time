@@ -71,7 +71,7 @@ spring:
       mode: always
 
 server:
-  port: 9093
+  port: 8080
 
 # ===================================================================
 # JHipster specific properties
