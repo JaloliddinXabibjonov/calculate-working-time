@@ -32,6 +32,7 @@ public class ReportPreparationService {
 
                 Instant end = workHistory.getEnd();
                 Reason reason = workHistory.getReason();
+
                 if (end == null) {
                     message =
                         message.concat(
@@ -51,15 +52,18 @@ public class ReportPreparationService {
                     continue;
                 }
                 WorkingTimeDTO workingTimeDTO = workingTimeCounterService.counter(workHistory);
+                String hours = workingTimeDTO.getHours() == 0 ? ("") : (workingTimeDTO.getHours() +
+                    " soat ");
+                String minutes = workingTimeDTO.getMinutes() == 0 ? "0 minut" : (workingTimeDTO.getMinutes() +
+                    " minut");
                 message =
                     message.concat(
                         "<b>Xodim: </b><i>" +
                         fullName +
                         "</i>\n<b>Ish davomiyligi: </b> <i>" +
-                        workingTimeDTO.getHours() +
-                        " soat " +
-                        workingTimeDTO.getMinutes() +
-                        " minut</i>\n"
+                        hours +
+                        minutes+
+                        " </i>\n"
                     );
             }
             return message;

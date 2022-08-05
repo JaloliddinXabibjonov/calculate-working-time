@@ -1,7 +1,5 @@
 package uz.devops.service;
 
-import java.time.Instant;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -13,6 +11,9 @@ import uz.devops.domain.Worker;
 import uz.devops.domain.enumeration.Status;
 import uz.devops.repository.WorkHistoryRepository;
 import uz.devops.service.dto.WorkingTimeDTO;
+
+import java.time.Instant;
+import java.util.Optional;
 
 @Service(DataLoader.GO_HOME)
 public class GoHomeCommandService extends AbstractBot {
@@ -39,14 +40,15 @@ public class GoHomeCommandService extends AbstractBot {
             WorkHistory savedWorkHistory = workHistoryRepository.save(workHistory);
 
             WorkingTimeDTO workingTimeDTO = workingTimeCounterService.counter(savedWorkHistory);
-
+            String hours = workingTimeDTO.getHours() == 0 ? ("") : (workingTimeDTO.getHours() +
+                " soat ");
+            String minutes = workingTimeDTO.getMinutes() == 0 ? "" : (workingTimeDTO.getMinutes() +
+                " minut");
+            String work = (hours + minutes).equals("") ? " ishlamadingiz." : " ishladingiz.";
             sendMessage.setText(
                 "Bugun siz " +
-                workingTimeDTO.getHours() +
-                " soat " +
-                workingTimeDTO.getMinutes() +
-                " minut ishladingiz." +
-                "\nMaroqli hordiq oling"
+                    hours + minutes + work +
+                    "\nMaroqli hordiq oling"
             );
         } else {
             sendMessage.setText("Siz hali ishga kelmagansiz!");
